@@ -1,0 +1,2608 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<script src="./data/jquery-1.10.1.min.js"></script>
+		<!--<link href="https://cdn.bootcdn.net/ajax/libs/video.js/7.11.7/alt/video-js-cdn.min.css" rel="stylesheet">
+		<script src="https://cdn.bootcdn.net/ajax/libs/video.js/7.11.7/alt/video.core.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/videojs-contrib-hls/5.9.0/videojs-contrib-hls.min.js"></script>-->
+		<!-- <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css"> -->
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			html,body,#container{
+				height: 100%
+			}
+			.input-item{
+				height: 2.2rem;
+			}
+			.btn{
+				width: 6rem;
+				margin: 0 .5rem 0 .5rem;
+			}
+			.input-text{
+				width: 4rem;
+				margin-right:1rem;
+			}
+			#app{
+			}
+			.ads-search{
+				width: 100%;
+				display: flex;
+			}
+			#app button{
+				width: 100px;
+				height: 30px;
+			}
+
+			.red{
+				color: #ff0000 !important;
+			}
+			.info{
+				position: fixed;
+				width: 200px;
+				height: auto;
+				/*background-color: rgba(0,0,0,.5);*/
+				z-index: 99;
+				padding: 20px;
+				color:#fff;
+				background: rgba(13,21,61,.7);
+				border: 1px solid rgba(126,206,244,.8);
+			}
+			.info div{
+				margin: 10px 0;
+			}
+			.i-tit{
+				font-size: 20px;
+				font-weight: bold;
+			}
+
+			#app{
+			/*	position: fixed;
+				z-index: 1;
+				bottom: 0;
+				right: 5px;
+				width: 280px;
+				height: auto;*/
+			}
+			.lengend{
+				width: 280px;
+				height: auto;
+				background-color: rgba(0,0,0,.4);
+				padding: 10px;
+				border-radius: 5px;
+				padding-bottom: 5px;
+				position: fixed;
+				bottom: 52px;
+				right: -285px;
+				z-index: 99;
+				transition: right .3s;
+			}
+			.l-show{
+				right: 26%;
+			}
+			.l-item{
+				width: 100%;
+				height: auto;
+			}
+			.l-head{
+				width: 100%;
+				height: auto;
+			}
+			.f-item{
+				width: auto;
+				height: 25px;
+				margin-bottom: 5px;
+			}
+			input[type=checkbox]{
+				display: none;
+			}
+			.f-item label{
+				width: auto;
+				display: inline-block;
+				height: 25px;
+				line-height: 25px;
+				color: #fff;
+				position: relative;
+				padding-left: 20px;
+				cursor: pointer;
+			}
+			.l-cont{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+			.l-cont .f-item{
+				width: 50%;
+			}
+			.f-item label:before{
+				position: absolute;
+				left: 0;
+				display: inline-block;
+				content: "";
+				width: 14px;
+				height: 14px;
+				top: 5px;
+				border: 1px solid #BFBFBF;
+				border-radius: 50%;
+			}
+			.f-item input:checked+label:before{
+				background-image: url('./icon/check.png');
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 100% 100%;
+				border-color: #4679ff;
+			}
+
+			.f-item label span{
+				font-size: 14px;
+				display: inline-block;
+				height: 25px;
+				line-height: 25px;
+			}
+			.f-item label i{
+				display: inline-block;
+				width: 22px;
+				height: 14px;
+				margin:  0 3px;
+			}
+			.f-item label img{
+				width: 22px;
+				height: 22px;
+				vertical-align: sub;
+			}
+			.app-vis{
+				width: 32px;
+				height: 32px;
+				margin:10px 0;
+				float: right;
+				cursor: pointer;
+				position: fixed;
+				bottom: 40px;
+				right: 24%;
+			}
+			.app-vis label{
+				display: inline-block;
+				width: 100%;
+				height: 100%;
+				background-image: url('./icon/icon_tili_p@2x.png');
+				background-size: 100% 100%;
+				background-position: center;
+				background-repeat: no-repeat;
+			}
+			.app-vis input:checked+label{
+				background-image: url('./icon/icon_tili_n@2x.png');
+			}
+			.car-search{
+				width: 300px;
+				height: 40px;
+				position: fixed;
+				left: 20px;
+				top: 20px;
+				z-index: 99;
+				background-color: rgba(255,255,255,.6);
+				border-radius: 5px;
+				display: flex;
+			}
+			.car-search input{
+				flex-grow: 1;
+				border:none;
+				background-color: transparent;
+				padding-left: 10px;
+				outline: none;
+			}
+			.car-search i{
+				color: #fff;
+				position: absolute;
+				right: 70px;
+				display: inline-block;
+				height: 20px;
+				width: 20px;
+				background-color: #999;
+				border-radius: 50%;
+				top: 10px;
+				background-image: url('icon/icon_close@2x.png');
+				text-align: center;
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: 20px;
+				cursor: pointer;
+
+			}
+			.car-search span{
+				display: inline-block;
+				width: 60px;
+				height: 100%;
+				color: #333;
+				line-height: 40px;
+				text-align: center;
+				border-left: 1px solid #ccc;
+				cursor: pointer;
+
+			}
+
+		</style>
+		<title>经开区</title>
+	</head>
+	<body>
+		<div id='container'></div>
+		<div id="app">
+			<div class="info" :style="infoPos"  v-show="infoVis">
+				<div class="i-tit" vshow="carInfo.type==='pog'">{{carInfo.name}}</div>
+				<div class="i-main">
+					<template v-if="carInfo.type==='pog'">
+						<div class="im-item">企业数量：{{carInfo.qynum}}</div>
+						<!-- <div class="im-item">当前移动危险源</div> -->
+					</template>
+					<template v-else>
+						<div class="im-item" >车牌号：{{carInfo.vehicleNo}}</div>
+						<div class="im-item">速度：{{carInfo.vec1}}</div>
+						<div class="im-item">状态：{{carInfo.vehicle_type | status}}</div>
+						<div class="im-item">车辆码：{{carInfo.qr_color==1?'绿牌':carInfo.qr_color==2?'黄牌':'红牌'}}车辆</div>
+						<div class="im-item">运单状态：{{carInfo.is_waybill==1?'无运单':'有运单'}}</div>
+					</template>
+				</div>
+			</div>
+			<div class="zjinfor info" :style="infoPos" v-show="zjinforvis">
+				<p>	{{zjinfor.name}}</p>
+			</div>
+			<!--<div style="width: 400px;height: 300px;position: absolute;right: 30px;top: 30px;" v-show="show_video">
+				<div v-show="show_video" id="videobox" style="width: 400px;height: 300px;">
+				    <video  id="myVideo" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="400" height="300">
+				        <source id="source" src='https://hls01open.ys7.com/openlive/6eec4b5f6eea4ab9814bb23504173f40.m3u8' type="application/x-mpegURL">
+				    </video>
+				</div>
+				<img src="icon/close.png" style="max-width: 25px; position: absolute;right: 10px;top: 5px;" @click="show_video=false">
+			</div>-->
+			<div class="lengend" :class="vis&&'l-show'">
+				<div class="l-item" v-for="(i,k) of form" :key="k">
+					<div class="l-head">
+						<div class="f-item">
+							<input type="checkbox" v-model="i.val" :id="k+'-tit'">
+							<label :for="k+'-tit'">
+								<span>{{i.tit}}</span>
+							</label>
+						</div>
+					</div>
+					<div class="l-cont">
+						<div class="f-item" v-for="(j,z) of i.kids" :key="z">
+							<input type="checkbox" v-model="i.model" :value="j.val" :id="k+'-item-'+z" @change="i.change(i)">
+							<label :for="k+'-item-'+z">
+								<img :src="j.icon" alt="" v-if="j.icon">
+								<i v-if="j.bc" :style="{'background-color':j.bc}"></i>
+								<span>{{j.label}}</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="app-vis">
+				<input type="checkbox" v-model="vis" id="vis">
+				<label for="vis"></label>
+			</div>
+			<div class="car-search" style="opacity: 0;">
+				<input type="text" placeholder="车辆搜索" v-model="linKey">
+				<i @click="searchClear" v-show="linKey"></i>
+				<span @click="linSearch">搜索</span>
+			</div>
+		</div>
+		<script src="https://webapi.amap.com/maps?v=1.4.15&key=64fdc49bf9400ae73e9cae060dec0396&plugin=AMap.MouseTool"></script>
+		<script src="./data/vue.js"></script>
+		<script type="text/javascript" src="./data/data.js"></script>
+		<script src="./data/axios.js"></script>
+		<script type="text/javascript">
+			const MAP_KEY = "64fdc49bf9400ae73e9cae060dec0396",
+				{
+					LngLat
+				} = AMap;
+			var map = new AMap.Map('container', {
+				zoom: 13,
+				center: new LngLat(107.001406,29.831293),
+				mapStyle: 'amap://styles/d85fd74da780340ec287f21f88424124'
+			}),
+				stopcolor= '#ff0000',
+				livcolor = '#e89393',
+				lv1color= "#ff0000",
+				lv2color = "#a08e8e",
+				lv3color= '#d2db00',
+				lv4color= '#f29b76',
+
+				overlayGroups={
+					fac:[],
+					car:[],
+					enter:{},
+					road:[],
+					truth:[],
+				},
+				kk=`107.027841,29.759073;107.034279,29.762086;106.997726,29.824484;107.059954,29.820257;107.043592,29.83791;107.016477,29.871028;106.962953,29.790122`;
+				function kkRender(){
+					strToLL(kk).map(i=>{
+						new AMap.Marker({
+							position:i,
+							map:map,
+							icon:'./icon/tuli_kakou.png'
+						})
+					})
+				}
+				kkRender();
+				kk1=`107.027841,29.759073;107.034279,29.762086;106.962953,29.790122`;
+//				function sxtRender(){
+//					strToLL(kk1).map(i=>{
+//					  marker =new AMap.Marker({
+//							position:i,
+//							map:map,
+//							icon:'./icon/sxt.png',
+//						})
+//						marker.on('click',markerClick)
+//					})
+//
+//				}
+//				sxtRender();
+				 function markerClick(e){
+//					 console.log(e)
+					let pos=e.pixel;
+					//vm.carInfo=e.target.getExtData();
+					// vm.infoVis=true;
+					// vm.infoPos={
+					// 	left:`${pos.x+10}px`,
+					// 	top:`${pos.y-180}px`
+					// }
+					vm.show_video=true;
+//					if(e.target._amap_id==26){
+//						var url='https://hls01open.ys7.com/openlive/6eec4b5f6eea4ab9814bb23504173f40.m3u8';
+//						var player = videojs('myVideo');
+//						player.pause();
+//						player.dispose();
+//						document.getElementById('videobox').innerHTML = '';
+//						var str2 = `<video id="myVideo" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="400" height="300">
+//						    <source id="source" src="${url}" type="application/x-mpegURL">
+//						</video>`;
+//						document.getElementById('videobox').innerHTML = str2;
+//						videojs('myVideo', {
+//						    bigPlayButton: true,
+//						    textTrackDisplay: false,
+//						    posterImage: false,
+//						    errorDisplay: false
+//						},function(){
+//						    this.play();
+//						})
+//					}else if(e.target._amap_id==23){
+//						var url='https://hls01open.ys7.com/openlive/5a20e1d927244f638b141ca1f536166d.m3u8';
+//						var player = videojs('myVideo');
+//						player.pause();
+//						player.dispose();
+//						document.getElementById('videobox').innerHTML = '';
+//						var str2 = `<video id="myVideo" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="400" height="300">
+//						    <source id="source" src="${url}" type="application/x-mpegURL">
+//						</video>`;
+//						document.getElementById('videobox').innerHTML = str2;
+//						videojs('myVideo', {
+//						    bigPlayButton: true,
+//						    textTrackDisplay: false,
+//						    posterImage: false,
+//						    errorDisplay: false
+//						},function(){
+//						    this.play();
+//						})
+//					}else{
+//						var url='https://hls01open.ys7.com/openlive/0cec52bf7fb240c0852a3c45c039da9f.m3u8';
+//						var player = videojs('myVideo');
+//						player.pause();
+//						player.dispose();
+//						document.getElementById('videobox').innerHTML = '';
+//						var str2 = `<video id="myVideo" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="400" height="300">
+//						    <source id="source" src="${url}" type="application/x-mpegURL">
+//						</video>`;
+//						document.getElementById('videobox').innerHTML = str2;
+//						videojs('myVideo', {
+//						    bigPlayButton: true,
+//						    textTrackDisplay: false,
+//						    posterImage: false,
+//						    errorDisplay: false
+//						},function(){
+//						    this.play();
+//						})
+//					}
+					// videojs('myVideo', {
+					// 	 autoplay: true,
+					//     bigPlayButton: true,
+					//     textTrackDisplay: false,
+					//     posterImage: false,
+					//     errorDisplay: false
+					// })
+					// function changeVideo(url){
+					//     var player = videojs('myVideo');
+					//     player.pause();
+					//     player.dispose();
+					//     document.getElementById('videobox').innerHTML = '';
+					//     var str2 = `<video id="myVideo" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="300" height="250">
+					//         <source id="source" src="${url}" type="application/x-mpegURL">
+					//     </video>`;
+					//     document.getElementById('videobox').innerHTML = str2;
+					//     videojs('myVideo', {
+					//         bigPlayButton: true,
+					//         textTrackDisplay: false,
+					//         posterImage: false,
+					//         errorDisplay: false
+					//     },function(){
+					//         this.play();
+					//     })
+					// }
+				};
+
+
+			showMarkers();
+				var vm=new Vue({
+					el:"#app",
+					filters:{
+						status(n){
+							switch(n){
+								case -1:
+								return '区域外行驶';
+								case 0:
+								return '正常';
+								case 1:
+								return '超速';
+								case 2:
+								return '禁行/禁停';
+								case 3:
+								return '禁停/禁行';
+								case 4:
+								return '未上报';
+								case 5:
+								return '超最大数量'
+								default:return "";
+							}
+						}
+					},
+					data(){
+						let fac=[
+									{
+										label:"变电站",
+										icon:'./icon/d.png',
+										val:'y',
+									},
+									{
+										label:"配气站",
+										icon:'./icon/fq.png',
+										val:'g',
+									},
+									{
+										label:"热能配置",
+										icon:'./icon/rs.png',
+										val:'v',
+									},
+									{
+										label:"废物处理",
+										icon:'./icon/fs.png',
+										val:'f',
+									},
+									{
+										label:"给水厂",
+										icon:'./icon/w.png',
+										val:'d',
+									},
+									{
+										label:"污水处理厂",
+										icon:'./icon/ws.png',
+										val:'h',
+									},
+									{
+										label:"事故池",
+										icon:'./icon/b.png',
+										val:'p',
+									},
+									{
+										label:"应急集合点",
+										icon:'./icon/pp.png',
+										val:'m',
+									},
+									{
+										label:"医院",
+										icon:'./icon/ht.png',
+										val:'_',
+									},
+									{
+										label:"居住区域",
+										bc:livcolor,
+										val:'live',
+									},
+									{
+										label:"停车区域",
+										bc:stopcolor,
+										val:'stop',
+									}
+
+								],
+							car=[
+									{
+										label:"行驶车辆",
+										icon:'./icon/icon_tuli_xs@2x.png',
+										val:100,
+									},
+									{
+										label:"停止车辆",
+										icon:'./icon/icon_tuli_tz@2x.png',
+										val:200,
+									},
+									{
+										label:"预警车辆",
+										icon:'./icon/icon_tuli_yj@2x.png',
+										val:10,
+									},
+									{
+										label:"正常车辆",
+										icon:'./icon/icon_tuli_wyj@2x.png',
+										val:20,
+									},
+									{
+										label:"运单车辆",
+										icon:'./icon/icon_tuli_yd@2x.png',
+										val:1,
+									},{
+										label:"无运单车辆",
+										icon:'./icon/icon_tuli_wyj@2x.png',
+										val:2,
+									}
+								],
+							enter=[
+									{
+										label:"一级周界",
+										bc:lv1color,
+										val:'lv1',
+									},
+									{
+										label:"二级周界",
+										bc:lv2color,
+										val:'lv2',
+									},
+									{
+										label:"三级周界",
+										bc:lv3color,
+										val:'lv3',
+									},
+									{
+										label:"四级周界",
+										bc:lv4color,
+										val:'lv4',
+									}
+
+								],
+							road=[
+									{
+										label:"正常周界",
+										bc:'#448ACA',
+										val:'nor',
+									},
+									{
+										label:"预警周界",
+										bc:'#46A162',
+										val:'warn',
+									},
+									{
+										label:"禁行周界",
+										bc:'#6A005F',
+										val:'no',
+									}
+								];
+
+						return {
+							show_video:false,
+							infoPos :{
+								left:'0px',
+								top:'0px'
+							},
+							videosrc:true,
+							zjinfor:{},
+							zjinforvis:false,
+							carInfo:{},
+							infoVis:false,
+							vis:false,
+							linKey:"",
+							search:'',
+						form:[
+							{
+								tit:'固定设施标记',
+								get val(){
+									return this.model.length===this.kids.length;
+								},
+								set val(n){
+									if(n){
+										this.model = this.kids.map(i=>i.val);
+									}else{
+										this.model= [];
+									}
+									this.change(this);
+								},
+								model:fac.map(i=>i.val),
+								change(_this){
+									let marksers= overlayGroups.fac,
+										kids=_this.kids.map(i=>i.val);
+
+									marksers.forEach(i=>{
+										let val=i.getExtData().type;
+										if(_this.model.includes(val)||!kids.includes(val)){
+											i.show();
+										}else{
+											i.hide();
+										}
+									})
+
+
+								},
+								kids:fac
+								},
+//
+								{
+								 tit:'周界',
+								get val(){
+									return this.model.length===this.kids.length;
+								},
+								set val(n){
+									if(n){
+										this.model = this.kids.map(i=>i.val);
+									}else{
+										this.model= [];
+									}
+									this.change(this);
+
+								},
+								change(_this){
+									vm.enterSec();
+									/*
+									let enters= overlayGroups.enter,
+										kids=_this.kids.map(i=>i.val);
+
+
+										for(var i in enters){
+											if(_this.model.includes(i)){
+												enters[i].forEach(j=>j.show());
+											}else{
+												enters[i].forEach(j=>j.hide());
+											}
+										}
+*/
+
+								},
+								model:enter.map(i=>i.val),
+								kids:enter
+							},
+							{
+								tit:'周界筛选禁行',
+								$val:false,
+
+								get val(){
+									return this.$val;
+								},
+								set val(n){
+									this.$val=n;
+									this.change(this);
+
+								},
+								change(_this){
+									vm.enterSec();
+
+
+								},
+								model:[1,2],
+								kids:[
+									{
+										label:"非禁行",
+										val:2,
+									},
+									{
+										label:"禁行",
+										val:1,
+									}
+									]
+							},
+							{
+								tit:'道路周界',
+								model:true,
+								change(_this){
+									let truth= overlayGroups.truth,
+										kids=_this.kids.map(i=>i.val);
+
+									for(var i in truth){
+										if(_this.model.includes(i)){
+											truth[i].forEach(j=>j.show());
+										}else{
+											truth[i].forEach(j=>j.hide());
+										}
+									}
+
+
+								},
+								get val(){
+									return this.model;
+								},
+								set val(n){
+
+									this.model=n;
+									let truth= overlayGroups.truth;
+
+									for(var i in truth){
+										if(n){
+											truth[i].forEach(j=>j.show());
+										}else{
+											truth[i].forEach(j=>j.hide());
+										}
+									}
+
+								},
+								kids:[],
+							}
+						]
+						}
+					},
+					computed:{
+						enterModel(){
+							var ef=this.form.filter(i=>i.tit==='周界')[0],
+								sf=this.form.filter(i=>i.tit==='周界筛选禁行')[0];
+
+							return {
+								lv:ef.model,
+								isSec:sf.val,
+								sec:sf.model
+							}
+						}
+					},
+					methods:{
+						enterSec(){
+							let enters= overlayGroups.enter;
+
+
+							for(var i in enters){
+								if(this.enterModel.lv.includes(i)){
+									if(this.enterModel.isSec){
+										enters[i].forEach(j=>{
+											if([0,...this.enterModel.sec].includes(j.getExtData().is_ban)){
+												j.show()
+											}else{
+												j.hide();
+											}
+										});
+									}else{
+										enters[i].forEach(j=>j.show());
+									}
+
+								}else{
+									enters[i].forEach(j=>j.hide());
+								}
+							}
+						},
+						linSearch(){
+							this.search=this.linKey;
+							vm.form[1].change();
+						},
+						searchClear(){
+							this.search="";
+							this.linKey="";
+							vm.form[1].change();
+						},
+						dataHandle({data}){
+//							console.log(data)
+							let lv1=[],lv2=[],lv3=[],lv4=[];
+							data.filter(function(i) {
+								var res;
+								if(i.region_type===5){
+									res=false;
+								}else if(i.region_type===8){
+									res = false;
+									overlayGroups.fac.push(lvOverRender(i,{
+										fillColor:stopcolor,
+										fillOpacity:.3,
+										strokeColor:stopcolor,
+										extData:{
+											type:'stop'
+										}
+									}))
+								}else if(i.region_type===3){
+									res = false;
+									overlayGroups.fac.push(lvOverRender(i,{
+										fillColor:livcolor,
+										fillOpacity:.5,
+										strokeColor:livcolor,
+										extData:{
+											type:'live'
+										}
+									}))
+								}else{
+									res = true;
+								}
+								return res;
+
+							}).forEach(i=>{
+								if(i.info){
+									let stys={
+										87:{
+											fillColor:"#26c533",
+											strokeColor:'#26c533',
+										},
+										90:{
+											fillColor:"#FF00FF",
+											strokeColor:'#FF00FF',
+										},
+										91:{
+											fillColor:"#FF00FF",
+											strokeColor:'#FF00FF',
+										},
+										85:{
+											fillColor:"#26c533",
+											strokeColor:'#26c533',
+										},
+                    99:{
+                    	fillColor:"#26c533",
+                    	strokeColor:'#26c533',
+                    },
+										92:{
+											fillColor:"rgba(232,232,246,.5)",
+											strokeColor:'rgba(232,232,246,.5)',
+										},
+										96:{
+											fillColor:"#FF00FF",
+											strokeColor:'#FF00FF',
+										},
+										97:{
+											fillColor:"#FF00FF",
+											strokeColor:'#FF00FF',
+										},
+										98:{
+											fillColor:"#FF00FF",
+											strokeColor:'#FF00FF',
+										},
+									}
+									var over=lvOverRender(i,stys[i.id]||{})
+									switch(i.region_lv){
+										case 1:
+											lv1.push(over);
+										break;
+										case 2:
+											lv2.push(over);
+										break;
+										case 3:
+											lv3.push(over);
+										break;
+										case 4:
+											lv4.push(over);
+										break;
+
+									}
+								}
+							})
+							overlayGroups.enter={
+								lv1,lv2,lv3,lv4
+							}
+						}
+					},
+					created(){
+						getData(this.dataHandle)
+					}
+
+				});
+
+
+			function strToLL(str) {
+				return str.split(';').map(i => new LngLat(...i.split(',').map(j => +j)))
+			}
+
+
+			function xlsxToPath(str) {
+				str = str.replace(/\)\n$|\n|^\(/g, '').replace(/\)\(/g, ';');
+				return strToLL(str);
+			}
+
+			function baiduToAMap(lls) {
+				AMap.convertFrom(lls, 'baidu', (r, e) => {
+					window.a = e.locations;
+				})
+			}
+			function lvOverRender(i,sty){
+				var style={
+					fillOpacity:{
+						1:0,
+						2:.5,
+						3:.5,
+						4:1,
+					},
+					fillColor:{
+						1:lv1color,
+						2:lv2color,
+						3:lv3color,
+						4:lv4color
+					},
+					strokeOpacity:{
+						1:1,
+						2:1,
+						3:1,
+						4:1
+					},
+					strokeColor:{
+						1:lv1color,
+						2:lv2color,
+						3:lv3color,
+						4:lv4color
+					},
+					strokeWeight:{
+						1:3,
+						2:2,
+						3:0,
+						4:0,
+					},
+					zIndex:{
+						1:21,
+						2:22,
+						3:23,
+						4:24
+					},
+					strokeStyle:{
+						1:'dashed',
+						2:'solid',
+						3:'solid',
+						4:'solid',
+					}
+				}
+				var poy=new AMap.Polygon({
+					map:map,
+					path:strToLL(i.info),
+					extData:i,
+					...(function(){
+						var obj={};
+						for(var j in style){
+							obj[j]=style[j][i.region_lv]
+						}
+						return obj
+					})(),
+					...(sty||{})
+				})
+
+				poy.on('click',function(e){
+					console.log(e.target.getExtData())
+					 if(e.target.getExtData().type=='stop'){
+			  	 	  vm.zjinfor={name:'明宇危化品停车场'}
+				  	}else if(e.target.getExtData().type=='live'){
+				  		vm.zjinfor={name:'晏家居住区'}
+				  	}else{
+				  		vm.zjinfor=e.target.getExtData();
+				  	}
+
+//						console.log(vm.zjinfor);
+					vm.zjinforvis=true;
+					vm.infoVis=false;
+					let pos=e.pixel;
+					vm.infoPos={
+						left:`${pos.x+10}px`,
+						top:`${pos.y-120}px`
+					}
+					var timer;
+					timer&&clearTimeout(timer);
+
+					timer=setTimeout(e=>{
+						vm.zjinforvis = false
+					},1500);
+				})
+
+				return poy;
+			}
+			function showJxq(path) {
+				return new AMap.Polygon({
+					map: map,
+					path: path,
+					strokeWeight: 0.1,
+					fillColor: '#ff0000',
+					fillOpacity: 0.1,
+				})
+			}
+
+
+//			var ws = new WebSocket("ws://47.108.64.59:2346"),
+			var	carlist= [],
+				timer,
+				markerEvent=e=>{
+				console.log(e)
+					let pos=e.pixel;
+					vm.carInfo=e.target.getExtData();
+					vm.infoVis=true;
+					vm.zjinforvis=false;
+					vm.infoPos={
+						left:`${pos.x+10}px`,
+						top:`${pos.y-120}px`
+					}
+					timer&&clearTimeout(timer);
+
+					timer=setTimeout(e=>{
+						vm.infoVis = false
+					}, 5e3);
+				};
+
+//			ws.onopen = function() {
+//				console.log('open')
+//			}
+			function CarMarkers(){
+				this.list=[];
+				this.data=[];
+				Object.defineProperty(this,'ids',{
+					get(){
+						return this.data.map(i=>i.id);
+					}
+				})
+			}
+			CarMarkers.prototype.getMarker=function(id){
+				return this.list.filter(i=>{
+					return i.getExtData().id===id
+				})[0];
+			}
+			CarMarkers.prototype.update=function(list){
+					let markers=[],marker;
+					list.forEach(i=>{
+						let lnglat=new LngLat(i.longitude,i.latitude);
+						i.type="marker";
+						/*marker = new AMap.Marker({
+								position:lnglat,
+								offset: new AMap.Pixel(-12, -12),
+								zIndex: 20+i.id+1,
+								map: map,
+								extData:i
+							});
+						if(i.id===6){
+							console.log(lnglat.toString())
+						}*/
+						if(this.ids.includes(i.id)){
+							marker=this.getMarker(i.id);
+
+							if(lnglat.toString()!==marker.getPosition().toString()){
+								marker.setPosition(lnglat);
+							}
+
+							var _data=marker.getExtData();
+
+							marker.setIcon('icon/'+i.status+'.png'/*_data.vehicle_type?'icon/dingwei_red.png':_data.vec1?'icon/dingwei_blue.png':'icon/dingwei_white.png'*/);
+
+
+							marker.setExtData(i);
+
+
+
+						}else{
+							marker = new AMap.Marker({
+								icon: 'icon/'+i.status+'.png',//i.vehicle_type?'icon/dingwei_red.png':i.vec1?'icon/dingwei_blue.png':'icon/dingwei_white.png',
+								position:lnglat,
+								offset: new AMap.Pixel(-12, -12),
+								zIndex: 30+i.id,
+								map: map,
+								extData:i
+							});
+							marker.on('click',markerEvent)
+						}
+
+						/*if(vm.form[1].zh.includes(i.status)){
+							marker.show();
+						}else{
+							marker.hide();
+						}*/
+
+						markers.push(marker)
+					})
+					let removeArr=[];
+					this.list.forEach(i=>{
+						if(!markers.includes(i)){
+							removeArr.push(i)
+						}
+					})
+					map.remove(removeArr)
+					this.data=list;
+					this.list=markers;
+					vm.form[1].change();
+				}
+
+
+			let car_markers=new CarMarkers();
+//			ws.onmessage = function(e) {
+//
+//				carlist=JSON.parse(e.data).vehicle_list;//.filter(i=>i.vehicle_type!==-1);
+//				carlist&&carlist.forEach(i=>{
+//					i.status=`${i.is_violations?1:2}${i.vehicle_type?1:2}${i.is_waybill===2?1:2}`;
+//				})
+//					car_markers.update(carlist);
+//
+//
+//			}
+//			ws.onclose = function(e) {
+//				console.log("close");
+//			}
+//			ws.onerror = function(e) {
+//				console.log(error);
+//			}
+
+
+			function showMarkers() {
+				const icons = {
+					_: './icon/ht.png',
+					g: './icon/fq.png',
+					u: './icon/lv3.png',
+					c: './icon/lv4.png',
+					l: './icon/2.png',
+					y: './icon/d.png',
+					v: './icon/rs.png',
+					d: './icon/w.png',
+					h: './icon/ws.png',
+					s: './icon/lv1.png',
+					b: './icon/ot.png',
+					m: './icon/pp.png',
+					f: './icon/fs.png',
+					p: './icon/b.png',
+					stop:'./icon/p.png'
+				}
+				let geoJson = markers_pos.map(i => {
+						return {
+							path: i[0],
+							type: i[1]
+						}
+					}),
+					markers = geoJson.map(i => {
+						return new AMap.Marker({
+							position: strToLL(i.path)[0],
+							icon: new AMap.Icon({
+								size: new AMap.Size(23, 23),
+								image: icons[i.type],
+								imageSize: new AMap.Size(15, 15),
+							}),
+							anchor:'bottom-center',
+							offset:new AMap.Pixel(0,0),
+							content: !icons[i.type] && `<span style="color:#fff">${i.type}</span>`,
+							map: map,
+							extData:i,
+						})
+					});
+
+
+					overlayGroups.fac=markers;
+				return markers;
+			}
+
+			overlayGroups.truth={nor:[],no:[],warn:[]};
+			var truthColor={nor:'#1b2538',warn:'#46A162',no:'#6A005F'}
+			ploygens.forEach(i=>{
+
+				if(i.type==='Polyline'){
+					overlayGroups.truth[i.status]&&overlayGroups.truth[i.status].push(new AMap[i.type]({
+						map:map,
+						path:strToLL(i.path),
+						strokeColor: truthColor[i.status],
+						strokeOpacity: 1,
+						zIndex:25,
+						extData:i,
+					}))
+				}
+			})
+
+
+
+			function getData(call){
+//				$.post('http://zhyq.toommi.com/api/Index/apppost',{
+//					action:'Perimeter/perimeter_list'
+//				}).then(r=>{
+//					call(JSON.parse(r))
+//					console.log(JSON.parse(r))
+//				})
+//
+//			return false;
+				call({
+    "code": "200",
+    "msg": "请求成功！",
+    "data": [
+        {
+            "id": 1,
+            "pid": 0,
+            "name": "经开区",
+            "region_lv": 1,
+            "region_type": 1,
+            "is_stop": 0,
+            "is_ban": 0,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.01527,29.895601;106.997876,29.89281;106.991391,29.887939;106.985853,29.880405;106.981835,29.871026;106.960543,29.849142;106.950737,29.83564;106.945862,29.824089;106.943563,29.814148;106.945054,29.799754;106.942764,29.783607;106.970332,29.766519;106.983273,29.751322;107.017612,29.737776;107.050425,29.734115;107.064458,29.737683;107.064744,29.739318;107.058942,29.748447;107.055205,29.762378;107.071581,29.77504;107.086248,29.789923;107.088111,29.796775;107.084106,29.807387;107.080959,29.81142;107.068298,29.813474;107.06422,29.813406;107.060435,29.82112;107.050628,29.827207;107.04726,29.828623;107.046543,29.829966;107.04701,29.830878;107.04712,29.834263;107.044827,29.838826;107.053757,29.842875;107.056479,29.849047;107.057124,29.85153;107.056802,29.853468;107.060415,29.86047;107.061665,29.864841;107.054919,29.881592;107.052508,29.894119;107.040451,29.898403;107.028579,29.89536;107.014946,29.895825;106.997804,29.89278",
+           //"info":"106.984020,29.855818;106.994806,29.851833;106.994824,29.851520;106.988587,29.838564;106.984299,29.829767;106.982840,29.827453;106.981220,29.825638;106.980214,29.825372;106.978903,29.825309;106.967427,29.830163;106.967087,29.830489;106.969007,29.834299;106.968704,29.835957;106.968848,29.837510;106.970031,29.838883;106.971844,29.842296;106.973280,29.846785;106.974662,29.850457;106.976923,29.852454;106.977515,29.854617;106.977390,29.856370;106.978322,29.858471;106.979759,29.859333;106.982059,29.859033;106.983750,29.857338;106.984038,29.855818"
+           //百度坐标集"info": "107.062736,29.891181;107.061300,29.897795;107.060726,29.901168;107.056430,29.902360;107.048547,29.902280;107.040363,29.903125;107.034322,29.903390;107.025101,29.904721;107.016010,29.905977;107.007779,29.906362;106.999695,29.905864;106.992628,29.904575;106.985715,29.901749;106.980395,29.898133;106.975513,29.893491;106.968060,29.886804;106.961906,29.880971;106.956901,29.875763;106.933588,29.853736;106.925125,29.841266;106.915339,29.824596;106.903938,29.804884;106.899749,29.793657;106.896866,29.777028;106.902065,29.771937;106.910574,29.767958;106.921226,29.763030;106.929984,29.760690;106.942019,29.758331;106.957773,29.738776;106.966653,29.733627;106.992518,29.718204;107.007523,29.715230;107.043405,29.707971;107.056169,29.709077;107.070341,29.713438;107.084227,29.718169;107.076353,29.742014;107.080633,29.759133;107.096674,29.776956;107.087634,29.780280;107.086198,29.792803;107.085341,29.801318;107.081194,29.809038;107.068617,29.824131;107.060616,29.839669;107.067773,29.852063;107.067761,29.872731;107.065890,29.883719;107.062879,29.890933",
+        },
+        {
+            "id": 2,
+            "pid": 1,
+            "name": "工贸企业区（重钢新区）",
+            "region_lv": 2,
+            "region_type": 1,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.063642,29.80633;107.062425,29.805949;107.060367,29.805542;107.05584,29.806139;107.029119,29.775637;107.029237,29.775228;107.032677,29.772734;107.02808,29.768665;107.021375,29.768245;107.023976,29.763665;107.029637,29.760251;107.038026,29.765198;107.047911,29.774437;107.056505,29.783831;107.062446,29.784073;107.063268,29.785496;107.062159,29.789396;107.072356,29.801662;107.063633,29.806376"
+        },
+        {
+            "id": 3,
+            "pid": 2,
+            "name": "宝丞碳材",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.046398,29.784892;107.040656,29.778293;107.039525,29.776914;107.039507,29.776757;107.039552,29.776608;107.043200,29.774191;107.043317,29.774262;107.050308,29.782396;107.047816,29.784054;107.046443,29.784947;107.046389,29.784892"
+           // "info": "107.045976,29.777595;107.045392,29.778015;107.045077,29.778233;107.044809,29.777942;107.04462,29.777777;107.04445,29.777596;107.044343,29.777462;107.044298,29.777423;107.044729,29.777103;107.044917,29.776963;107.045204,29.776745;107.045643,29.777225;107.045967,29.777563"
+        },
+        {
+            "id": 4,
+            "pid": 2,
+            "name": "重钢股份",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 5,
+            "pid": 4,
+            "name": "重钢高炉",
+            "region_lv": 4,
+            "region_type": 7,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 6,
+            "pid": 4,
+            "name": "重钢粗苯焦油",
+            "region_lv": 4,
+            "region_type": 7,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 7,
+            "pid": 4,
+            "name": "重钢转炉和焦炉煤气",
+            "region_lv": 4,
+            "region_type": 7,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 8,
+            "pid": 2,
+            "name": "朝阳气体",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.053447,29.803024;107.050215,29.799312;107.051801,29.798242;107.052146,29.798680;107.052526,29.799095;107.053628,29.800286;107.054507,29.801330;107.055178,29.802020;107.055169,29.802044;107.053455,29.803027"
+           // "info": "107.055133,29.802004;107.054489,29.80235;107.054077,29.802595;107.053477,29.802956;107.053011,29.802411;107.052797,29.80215;107.052331,29.80162;107.051416,29.800616;107.051219,29.800387;107.051613,29.80014;107.051944,29.799932;107.052303,29.799709;107.052544,29.799546;107.05275,29.799399;107.05395,29.800752;107.054354,29.801204;107.055106,29.801996"
+        },
+        {
+            "id": 9,
+            "pid": 2,
+            "name": "重钢新区道路",
+            "region_lv": 3,
+            "region_type": 5,
+            "is_stop": 0,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.016194,29.771123;107.017423,29.769502;107.019202,29.767147;107.020674,29.765457;107.021513,29.764615;107.022317,29.764;107.024455,29.762774;107.02596,29.762004;107.026601,29.761558;107.029025,29.759771;107.028093,29.759357;107.027207,29.758802;107.026747,29.75854;107.026432,29.758394;107.026058,29.758269;107.025541,29.758154;107.025018,29.758116;107.024711,29.758128;107.02426,29.758192;107.023715,29.758325;107.017788,29.760352;107.017201,29.760455;107.016245,29.760478;107.01536,29.760296;107.014486,29.759981;107.013611,29.759714;107.01297,29.759653;107.011833,29.759782;107.009874,29.760481;107.009133,29.760705;107.00805,29.760895;107.005623,29.761038;107.004738,29.761178;107.003609,29.761533;107.00129,29.762462;107.000631,29.762581;106.999802,29.762594;106.99918,29.762501;106.997809,29.762011;106.993764,29.759607;106.99073,29.757969;106.989129,29.757128;106.987563,29.75652;106.985944,29.755692;106.983984,29.754368;106.982718,29.75322;106.982889,29.753031;106.983788,29.753921;106.985755,29.75534;106.986654,29.755837;106.988652,29.756763;106.990343,29.757479;106.992504,29.758618;106.994972,29.760118;106.998233,29.76202;106.999008,29.762276;106.99991,29.762419;107.000668,29.762377;107.001624,29.76212;107.002562,29.761752;107.003249,29.761484;107.004422,29.761096;107.005121,29.760948;107.006006,29.760855;107.007874,29.760761;107.008217,29.760725;107.009093,29.760553;107.009553,29.760424;107.00995,29.760296;107.010384,29.760148;107.010799,29.759988;107.011463,29.759737;107.011752,29.759659;107.012203,29.759568;107.012654,29.759518;107.013088,29.759518;107.013525,29.759562;107.014387,29.759783;107.015366,29.760128;107.01574,29.760235;107.016061,29.760297;107.016579,29.760339;107.016972,29.760329;107.017332,29.760289;107.017819,29.760179;107.018384,29.759998;107.023738,29.758176;107.024202,29.758079;107.024653,29.75802;107.025058,29.757999;107.025631,29.758051;107.026063,29.75814;107.026509,29.758284;107.027063,29.758564;107.028463,29.759388;107.029079,29.759661;107.029934,29.759958;107.030853,29.760261;107.032009,29.760644;107.032863,29.76098;107.033592,29.761378;107.034068,29.761784;107.034779,29.762407;107.035358,29.762985;107.035879,29.76337;107.036674,29.763803;107.038561,29.764634;107.046561,29.768118;107.047664,29.768732;107.048847,29.769512;107.049577,29.770074;107.052522,29.772792;107.053207,29.773399;107.054034,29.774019;107.05557,29.77484;107.057669,29.775506;107.057753,29.775452;107.05803,29.775519;107.058161,29.775638;107.060692,29.776294;107.061301,29.776553;107.06173,29.776744;107.062257,29.777022;107.062803,29.777376;107.063294,29.777755;107.063849,29.778226;107.067621,29.781696;107.068398,29.782379;107.06956,29.783245;107.071402,29.784361;107.072461,29.785072;107.073275,29.785721;107.074115,29.78649;107.075277,29.787731;107.078273,29.790858;107.079052,29.791857;107.079571,29.792703;107.08009,29.794083;107.080161,29.794938;107.080095,29.796014;107.079845,29.796864;107.079581,29.797468;107.079339,29.797875;107.079063,29.798267;107.078512,29.798902;107.078042,29.799306;107.077457,29.799759;107.076425,29.800412;107.075137,29.801105;107.072875,29.80229;107.071598,29.802912;107.06993,29.803765;107.06462,29.806525;107.064134,29.806893;107.063284,29.80771;107.062436,29.809429;107.061467,29.811432;107.061284,29.81135;107.06307,29.807676;107.063262,29.807401;107.063714,29.806938;107.06399,29.806683;107.064004,29.806444;107.063968,29.80628;107.062751,29.805006;107.062522,29.804956;107.062053,29.805183;107.061525,29.805469;107.061396,29.805494;107.061266,29.805481;107.061141,29.80528;107.060573,29.804734;107.060679,29.804681;107.061374,29.805393;107.061593,29.805349;107.062298,29.804929;107.06254,29.80485;107.062835,29.804949;107.064098,29.80627;107.064125,29.806532;107.064089,29.80663;107.064697,29.806228;107.064982,29.806084;107.06308,29.803946;107.062446,29.803227;107.061456,29.802111;107.055816,29.80577;107.0557,29.805749;107.055539,29.80565;107.052434,29.802092;107.051075,29.800508;107.049954,29.799229;107.047103,29.796007;107.044716,29.79326;107.042552,29.790816;107.040819,29.7888;107.037801,29.785355;107.029277,29.775647;107.031997,29.773784;107.032438,29.773452;107.03359,29.772739;107.030452,29.770051;107.029912,29.769412;107.029831,29.768857;107.029958,29.768245;107.030067,29.767985;107.024582,29.765863;107.024167,29.765884;107.021966,29.767308;107.021136,29.768024;107.020865,29.767965;107.018645,29.769236;107.017924,29.769654;107.017616,29.769612;107.01637,29.77123;107.016208,29.771108;107.016388,29.77123;107.017634,29.769635;107.018963,29.767751;107.020623,29.765799;107.021635,29.764766;107.022434,29.764108;107.025531,29.762432;107.026208,29.762091;107.029278,29.759886;107.032292,29.760885;107.033254,29.761357;107.033389,29.761482;107.03338,29.761639;107.032109,29.763308;107.031758,29.764223;107.031316,29.765574;107.030494,29.767335;107.030206,29.767808;107.024866,29.765715;107.024307,29.765644;107.023992,29.765656;107.017711,29.769504;107.017649,29.769623;107.017928,29.769654;107.02087,29.767965;107.021136,29.768024;107.021961,29.767312;107.024172,29.765884;107.024587,29.765863;107.030071,29.767989;107.029958,29.768241;107.029831,29.768861;107.029916,29.769412;107.030439,29.770035;107.033586,29.772737;107.032398,29.773465;107.031979,29.773804;107.030705,29.774667;107.029282,29.775643;107.029619,29.776035;107.045667,29.794354;107.055525,29.805642;107.0557,29.805749;107.055807,29.80577;107.06146,29.802107;107.064964,29.806072;107.064982,29.806084;107.066851,29.805097;107.071526,29.802702;107.071745,29.802667;107.073617,29.801738;107.076353,29.800286;107.077346,29.799659;107.078298,29.798898;107.078848,29.798292;107.079348,29.797562;107.079603,29.797029;107.079813,29.796425;107.079974,29.795581;107.079996,29.795083;107.079942,29.79439;107.079839,29.793918;107.079624,29.793327;107.078957,29.792087;107.07851,29.791453;107.078117,29.790981;107.077799,29.790612;107.077205,29.789968;107.07597,29.788651;107.074092,29.786682;107.073413,29.786028;107.072966,29.785644;107.072725,29.785456;107.072202,29.785064;107.07137,29.784513;107.069417,29.783325;107.068362,29.782551;107.067187,29.781501;107.065592,29.780025;107.064238,29.778785;107.063384,29.778004;107.062342,29.777242;107.061979,29.77703;107.061546,29.776815;107.0608,29.77651;107.059525,29.776124;107.057015,29.775474;107.056134,29.775192;107.055453,29.774945;107.054469,29.774443;107.053842,29.774072;107.052911,29.773349;107.050628,29.771262;107.049397,29.770131;107.048748,29.769636;107.047982,29.769106;107.047095,29.768567;107.04553,29.767807;107.039652,29.76529;107.036719,29.763995;107.036221,29.763726;107.035897,29.763542;107.035641,29.763379;107.035366,29.763172;107.035083,29.762955;107.034549,29.762435;107.033785,29.761742;107.03365,29.761684;107.033547,29.761697;107.03225,29.763432;107.031672,29.765269;107.030689,29.767416;107.030273,29.768006;107.030079,29.768553;107.030016,29.768933;107.030092,29.769364;107.03038,29.769698;107.030784,29.770095;107.032161,29.771135;107.033883,29.772719;107.035761,29.774798;107.037917,29.777308;107.039327,29.778889;107.040514,29.778152;107.039507,29.776883;107.039455,29.776632;107.043254,29.774133;107.043362,29.774125;107.043479,29.77415;107.044586,29.775105;107.044919,29.775228;107.045075,29.775362;107.045237,29.775527;107.045927,29.776173;107.045855,29.776216;107.044896,29.775326;107.044573,29.775199;107.043421,29.774235;107.043326,29.774215;107.04329,29.774251;107.04351,29.774522;107.04447,29.775669;107.04468,29.775784;107.04611,29.777436;107.046424,29.777293;107.046559,29.777218;107.046532,29.777351;107.046195,29.777514;107.048252,29.779792;107.050348,29.782245;107.052177,29.781082;107.052356,29.781049;107.052575,29.781141;107.067522,29.798146;107.070666,29.801834;107.071382,29.802586;107.071646,29.802688;107.071691,29.802693;107.07132,29.802832;107.070729,29.802168;107.069718,29.801015;107.068573,29.799702;107.067781,29.7988;107.067285,29.798244;107.065502,29.799432;107.061577,29.802015;107.065148,29.806001;107.064973,29.806084;107.061451,29.802099;107.057561,29.804633;107.055277,29.801995;107.054614,29.801313;107.054507,29.801367;107.055124,29.801977;107.054901,29.802139;107.05474,29.802239;107.053478,29.802969;107.053294,29.803076;107.053383,29.803175;107.053527,29.803068;107.054695,29.802372;107.056845,29.804847;107.056836,29.804894;107.055794,29.805543;107.054158,29.80378;107.053509,29.803079;107.055794,29.805535;107.056841,29.80489;107.056953,29.80482;107.057351,29.804548;107.056129,29.803181;107.055505,29.802413;107.055223,29.802096;107.05479,29.802322;107.055412,29.803054;107.056948,29.804824;107.05583,29.805555;107.053527,29.803099;107.049941,29.798872;107.047269,29.795781;107.051677,29.793019;107.052824,29.792223;107.061286,29.801908;107.060302,29.802592;107.057432,29.804479;107.057556,29.804629;107.061653,29.801961;107.061591,29.801992;107.061402,29.801855;107.067106,29.79806;107.06385,29.794277;107.060469,29.790456;107.058598,29.788337;107.052958,29.792162;107.061402,29.801848;107.052958,29.792162;107.05286,29.792075;107.058522,29.788242;107.052454,29.781285;107.052302,29.78126;107.050966,29.782077;107.046631,29.78498;107.041098,29.788648;107.047183,29.795612;107.052883,29.792063;107.058531,29.78823;107.05245,29.781281;107.052311,29.78126;107.050227,29.782569;107.049371,29.781492;107.047857,29.779726;107.047055,29.778796;107.046039,29.777647;107.045492,29.777021;107.044488,29.775904;107.044142,29.775414;107.043218,29.77431;107.039634,29.776722;107.03971,29.776953;107.043376,29.781256;107.04647,29.784818;107.050106,29.782411;107.046349,29.7849;107.040653,29.778285;107.039345,29.779144;107.039174,29.779285;107.035028,29.774402;107.03373,29.772877;107.029619,29.77555;107.040923,29.788507;107.046345,29.784896"
+        },
+        {
+            "id": 10,
+            "pid": 1,
+            "name": "工贸企业区2",
+            "region_lv": 2,
+            "region_type": 1,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.014721,29.863896;107.008475,29.865503;107.00519,29.865276;107.002341,29.860468;106.999872,29.856167;106.995472,29.844997;106.991486,29.836033;106.986266,29.837592;106.984032,29.832949;106.986621,29.831903;106.987575,29.832163;106.987647,29.831928;106.988421,29.831703;106.98907,29.833171;106.993572,29.831906;106.994113,29.831697;106.993174,29.829341;106.992474,29.82826;106.991884,29.82751;106.996017,29.824577;106.996791,29.822733;106.996752,29.820649;106.997885,29.817155;107.001872,29.817866;107.001135,29.82029;107.001533,29.821287;106.99899,29.821402;106.998191,29.825473;107.000864,29.829602;107.000649,29.830044;107.00231,29.83307;107.003304,29.83318;107.007707,29.833296;107.010306,29.833566;107.010993,29.835184;107.01233,29.836133;107.012439,29.837916;107.012694,29.840952;107.009084,29.841012;107.011234,29.846804;107.012642,29.850476;107.015276,29.854849;107.016791,29.857988;107.018955,29.860835;107.016752,29.863375;107.014767,29.863908"
+        },
+        {
+            "id": 11,
+            "pid": 10,
+            "name": "中橡碳黑",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 12,
+            "pid": 10,
+            "name": "成渝气体",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.004694,29.844405;107.003864,29.844623;107.003413,29.844739;107.002854,29.844889;107.00251,29.844988;107.002872,29.845859;107.003215,29.846622;107.003503,29.847259;107.003684,29.847727;107.003811,29.848085;107.004551,29.847838;107.005182,29.847639;107.005723,29.847443;107.005886,29.847378;107.005616,29.846724;107.00529,29.845947;107.005056,29.845355;107.004694,29.844421"
+        },
+        {
+            "id": 15,
+            "pid": 1,
+            "name": "工贸企业区3",
+            "region_lv": 2,
+            "region_type": 1,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.008929,29.8183;107.008925,29.813723;107.019609,29.813488;107.02873,29.812655;107.031718,29.811502;107.036399,29.814863;107.043944,29.814394;107.0395,29.824636;107.041335,29.826925;107.045178,29.827625;107.044642,29.830192;107.041947,29.828649;107.037128,29.824828;107.03331,29.819484;107.025238,29.816861;107.017195,29.818289;107.012504,29.818836;107.008929,29.8183"
+        },
+        {
+            "id": 17,
+            "pid": 1,
+            "name": "化工企业区1",
+            "region_lv": 2,
+            "region_type": 2,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.968772,29.831195;106.961920,29.819395;106.962347,29.817739;106.966496,29.812619;106.973482,29.807349;106.974918,29.807826;106.976354,29.808990;106.976751,29.810340;106.979841,29.812068;106.983168,29.813364;106.984301,29.813517;106.984948,29.813201;106.986135,29.812490;106.986711,29.812503;106.989664,29.813939;106.990674,29.814463;106.992475,29.815214;106.995053,29.816470;106.995144,29.816924;106.993939,29.819210;106.991956,29.818494;106.991146,29.818377;106.990389,29.818493;106.989471,29.818955;106.989417,29.818987;106.989418,29.819802;106.990104,29.820956;106.986559,29.823176;106.985744,29.822694;106.985335,29.822672;106.985236,29.822719;106.984706,29.823196;106.984674,29.823310;106.984180,29.823723;106.983251,29.824349;106.981926,29.825265;106.980668,29.826116;106.979914,29.826532;106.979631,29.826689;106.979407,29.826591;106.979245,29.826598;106.976064,29.828183;106.975633,29.828486;106.971706,29.830243;106.968767,29.831194"
+           // "info":"106.961741,29.819839;106.961989,29.816457;106.970471,29.807868;106.971976,29.807629;106.974703,29.808146;106.976284,29.809813;106.979805,29.811355;106.986062,29.812341;106.987502,29.813038;106.989034,29.813771;106.992349,29.815191;106.994206,29.816080;106.995198,29.816539;106.995434,29.817414;106.994965,29.818391;106.994407,29.819259;106.991524,29.818318;106.990154,29.818393;106.989363,29.818901;106.990049,29.820839;106.986486,29.822870;106.991424,29.826937;106.991569,29.828096;106.992507,29.829277;106.992976,29.830307;106.992328,29.830878;106.991463,29.830667;106.990491,29.830519;106.990166,29.831086;106.988654,29.831521;106.988529,29.831679;106.988385,29.831586;106.988078,29.831478;106.987628,29.831559;106.986855,29.831674;106.986279,29.831779;106.985857,29.832024;106.984796,29.832507;106.984040,29.832816;106.983744,29.832261;106.983131,29.831024;106.982752,29.830211;106.982159,29.829538;106.981097,29.828192;106.980089,29.826987;106.980000,29.826736;106.979730,29.826579;106.979155,29.826500;106.978904,29.826704;106.978293,29.827033;106.968880,29.831181"
+        },
+        {
+            "id": 18,
+            "pid": 17,
+            "name": "国际复合",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.002141,29.844775;107.001978,29.844432;107.001789,29.84402;107.001617,29.843639;107.001491,29.843374;107.001329,29.842837;107.000967,29.842936;106.999984,29.843249;106.999244,29.843462;106.998253,29.843758;106.997405,29.844013;106.996396,29.8443;106.995584,29.844545;106.996071,29.845612;106.99636,29.846243;106.996901,29.84763;106.997271,29.848604;106.997676,29.849561;106.998245,29.850885;106.998731,29.851896;106.999715,29.851553;107.000716,29.851296;107.002087,29.850814;107.002836,29.850582;107.004117,29.850179;107.004325,29.850104;107.004352,29.850096;107.004126,29.849584;107.003856,29.848977;107.003639,29.848486;107.003206,29.847444;107.002691,29.846168;107.002132,29.844775"
+        },
+        {
+            "id": 19,
+            "pid":92,
+            "name": "长风化学",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+             "info":"106.988171,29.842040;106.980798,29.844968;106.982254,29.847910;106.986192,29.846360;106.986679,29.847266;106.990081,29.845879;106.988171,29.842040"
+          //"info": "106.964232,29.793185;106.964796,29.792785;106.96503,29.7926;106.965182,29.792327;106.965316,29.791999;106.96571,29.791033;106.966041,29.791115;106.966507,29.79123;106.966749,29.791232;106.966981,29.791141;106.967286,29.790971;106.967465,29.791201;106.967806,29.791697;106.968486,29.792629;106.967725,29.793256;106.966785,29.794061;106.966122,29.794626;106.965711,29.794966;106.965576,29.794956;106.964232,29.793201"
+        },
+        {
+            "id": 20,
+            "pid": 17,
+            "name": "建峰硝酸",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 22,
+            "pid": 92,
+            "name": "中荣化学",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.988276,29.831207;106.987524,29.830154;106.986506,29.828875;106.986524,29.828687;106.987739,29.828092;106.987918,29.828090;106.989721,29.830513;106.989918,29.830567;106.990036,29.830652;106.990045,29.830817;106.989866,29.830974;106.989010,29.831318;106.988461,29.831494;106.988281,29.831207"
+            //"info":"106.987151,29.830399;106.987331,29.830453;106.987515,29.830601;106.987988,29.831275;106.988313,29.831841;106.990171,29.831090;106.990271,29.831022;106.990356,29.830845;106.990323,29.830590;106.990148,29.830310;106.989755,29.829702;106.989630,29.829512;106.989598,29.829468;106.988878,29.829725;106.987155,29.830399"
+        },
+        {
+            "id": 24,
+            "pid": 17,
+            "name": "紫光国际",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.98244,29.820481;106.984995,29.822401;106.984977,29.822903;106.983001,29.824445;106.980159,29.822177"
+        },
+        {
+            "id": 25,
+            "pid": 17,
+            "name": "长鑫助剂",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 26,
+            "pid": 17,
+            "name": "映天辉",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.985744,29.822345;106.985348,29.822339;106.983656,29.820982;106.982315,29.819881;106.980832,29.818942;106.982371,29.817182;106.983745,29.81558;106.986625,29.816812;106.988111,29.818237;106.987787,29.81856;106.986805,29.81801;106.986168,29.818782;106.987292,29.819441;106.987743,29.819203;106.988553,29.819793;106.986953,29.821253;106.985757,29.822341"
+        },
+        {
+            "id": 27,
+            "pid": 17,
+            "name": "海州化学A区",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 28,
+            "pid": 17,
+            "name": "海州化学B区",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 29,
+            "pid": 92,
+            "name": "巴斯夫聚氨酯（重庆）有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.982033,29.829970;106.981215,29.830323;106.981135,29.830308;106.980313,29.830587;106.976821,29.831746;106.976390,29.831383;106.972247,29.833001;106.971151,29.830925;106.975768,29.828875;106.977693,29.827893;106.977711,29.827842;106.978559,29.827436;106.979501,29.826963;106.979568,29.826975;106.982033,29.829974"
+            //"info":"106.979604,29.827026;106.979389,29.827045;106.975593,29.828984;106.972975,29.830143;106.971106,29.830960;106.972515,29.833390;106.981274,29.830311;106.982046,29.829981;106.981956,29.829833;106.980005,29.827500;106.979609,29.827030"
+        },
+        {
+            "id": 30,
+            "pid": 17,
+            "name": "重庆梅塞尔气体产品有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.986333,29.831614;106.986467,29.831586;106.986918,29.831509;106.987156,29.831480;106.987507,29.831451;106.987700,29.831422;106.987939,29.831342;106.987957,29.831330;106.988060,29.831298;106.988177,29.831254;106.988173,29.831226;106.987385,29.830174;106.986367,29.828927;106.986232,29.828936;106.986042,29.828929;106.984739,29.829655;106.986342,29.831622"
+           // "info":"106.987979,29.831326;106.987619,29.831434;106.986904,29.831521;106.986476,29.831597;106.986323,29.831634;106.986085,29.831733;106.985852,29.831868;106.985383,29.831016;106.985617,29.830905;106.986300,29.830705;106.986723,29.830578;106.987029,29.830498;106.987160,29.830450;106.987290,29.830476;106.987393,29.830550;106.987552,29.830757;106.987975,29.831326"
+        },
+        {
+            "id": 31,
+            "pid": 17,
+            "name": "重庆鑫富化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.980047,29.822247;106.981072,29.823045;106.980335,29.82361;106.982152,29.825112;106.979584,29.826666;106.979422,29.826179;106.978988,29.823013;106.979078,29.822904"
+        },
+        {
+            "id": 32,
+            "pid": 17,
+            "name": "重庆晟弘化学有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.988328,29.815489;106.987419,29.815057;106.988462,29.813733;106.989353,29.814157;106.98938,29.814313;106.988346,29.815489"
+        },
+        {
+            "id": 33,
+            "pid":92,
+            "name": "重庆弈翔化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.990702,29.847186;106.986201,29.848878;106.986940,29.850244;106.987785,29.851868;106.989460,29.851213;106.989748,29.851790;106.992550,29.850715;106.990702,29.847194"
+            //"info":"106.989140,29.851349;106.988695,29.850334;106.989338,29.850094;106.989325,29.849942;106.988478,29.848296;106.988460,29.848230;106.988469,29.848190;106.990765,29.847310;106.992248,29.850182;106.989140,29.851349"
+        },
+        {
+            "id": 34,
+            "pid": 17,
+            "name": "重庆瑞福德化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.990859,29.816526;106.990653,29.816473;106.989922,29.816143;106.989193,29.815811;106.988589,29.815581;106.989282,29.814831;106.989758,29.814255;106.99074,29.814678;106.991551,29.815039;106.991821,29.815107;106.991894,29.815294;106.991894,29.815544;106.991336,29.816067;106.990886,29.816518"
+        },
+        {
+            "id": 35,
+            "pid": 17,
+            "name": "重庆渝巴物流有限责任公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.968898,29.826819;106.968163,29.827094;106.967607,29.82618;106.967158,29.825486;106.966476,29.824225;106.965848,29.823153;106.965454,29.822474;106.966314,29.822343;106.966475,29.82247;106.966816,29.823069;106.967049,29.82373;106.967659,29.824755;106.968234,29.825842;106.968628,29.826581;106.96888,29.826804"
+        },
+        {
+            "id": 36,
+            "pid": 17,
+            "name": "重庆德馨香料植物开发有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.982149,29.82509;106.981222,29.824403;106.980404,29.823674;106.981131,29.823086;106.982903,29.82443;106.982697,29.824588"
+        },
+        {
+            "id": 37,
+            "pid": 17,
+            "name": "重庆安盛钾业有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.987308,29.816597;106.986912,29.816403;106.986156,29.816141;106.986929,29.815275;106.988135,29.815659;106.987326,29.816581"
+        },
+        {
+            "id": 38,
+            "pid": 17,
+            "name": "秀博瑞殷（重庆）电子材料有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.985798,29.832565;106.986329,29.832264;106.987399,29.832249;106.987705,29.832357;106.988228,29.833607;106.986537,29.834072"
+        },
+        {
+            "id": 39,
+            "pid": 17,
+            "name": "重庆晶粒化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.978107,29.816457;106.977287,29.817439;106.976838,29.817246;106.976771,29.817137;106.976618,29.817069;106.976456,29.817003;106.976331,29.817009;106.975931,29.816836;106.976349,29.816332;106.97686,29.815741;106.977339,29.81599;106.977658,29.816186;106.97808,29.816453"
+        },
+        {
+            "id": 40,
+            "pid": 17,
+            "name": "佐能化工",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.973707,29.816864;106.973841,29.816167;106.974836,29.815436;106.974827,29.814848;106.974405,29.814588;106.975014,29.813822;106.977161,29.815083;106.975745,29.816787;106.975745,29.816991;106.975745,29.816991"
+        },
+        {
+            "id": 42,
+            "pid": 1,
+            "name": "化工企业区2",
+            "region_lv": 2,
+            "region_type": 2,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.968171,29.799299;106.961042,29.789935;106.957071,29.7853;106.956284,29.782592;106.962227,29.778731;106.972045,29.776513;106.981812,29.775788;106.991602,29.774165;106.986629,29.78116;106.973332,29.7863;106.969244,29.786834;106.972542,29.789429;106.980037,29.787229;106.986852,29.783917;106.995322,29.774735;106.997416,29.772828;107.00972,29.775802;107.011669,29.776333;107.006539,29.782875;107.005935,29.783136;107.004734,29.786674;106.998022,29.785928;106.9911,29.785977;106.977396,29.790352;106.977432,29.792577;106.975494,29.794201;106.971225,29.795085;106.968609,29.797352;106.969112,29.800365;106.968153,29.79929"
+        },
+        {
+            "id": 43,
+            "pid": 42,
+            "name": "中远物流",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 44,
+            "pid": 42,
+            "name": "林德气体",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.004246,29.788871;107.003881,29.788818;107.00351,29.78877;107.003113,29.788717;107.002928,29.788685;107.002509,29.788636;107.001972,29.788566;107.002099,29.788078;107.002184,29.787743;107.003394,29.78796;107.004115,29.788109;107.004526,29.788192;107.004368,29.788611;107.00425,29.788867"
+        },
+        {
+            "id": 45,
+            "pid": 42,
+            "name": "川维新区",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.99892,29.782864;106.99892,29.784306;106.99966,29.78431;106.999515,29.785848;106.999388,29.786665;106.999352,29.787026;107.000046,29.787071;107.001498,29.787182;107.002753,29.78725;107.003492,29.787277;107.004801,29.787397;107.005162,29.786466;107.006218,29.783746;107.005948,29.7835;107.005352,29.783407;107.002645,29.783153;106.998947,29.782825"
+        },
+        {
+            "id": 46,
+            "pid": 42,
+            "name": "化工码头",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.999555,29.776258;107.003452,29.777249;107.005364,29.777453;107.006646,29.777369;107.007981,29.777253;107.008306,29.776714;107.008542,29.776193;107.00856,29.775926;107.007189,29.775558;107.005745,29.77519;107.00412,29.774762;107.000747,29.774156;106.999322,29.773707;106.998655,29.773857;106.99824,29.773957;106.998024,29.774195;106.997879,29.774573;106.997951,29.775074;106.998365,29.775115;106.999375,29.775085;106.999483,29.775459;106.999465,29.77571;106.999284,29.776152;106.999519,29.776242"
+        },
+        {
+            "id": 48,
+            "pid": 1,
+            "name": "化工企业区3",
+            "region_lv": 2,
+            "region_type": 2,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.974091,29.806003;106.97488,29.804126;106.974232,29.801396;106.975307,29.798988;106.977138,29.797803;106.981089,29.797555;106.981989,29.79978;106.982744,29.800624;106.985119,29.800773;106.985731,29.80218;106.986307,29.803745;106.988252,29.804485;106.991782,29.805677;106.993657,29.806097;106.997009,29.805742;106.997441,29.805078;106.997476,29.803073;106.997474,29.80069;106.998087,29.798896;106.998483,29.797448;106.999962,29.796769;107.001296,29.796342;107.002847,29.791961;107.004255,29.78846;107.006205,29.783601;107.007497,29.78195;107.009826,29.77931;107.015251,29.777371;107.017777,29.778412;107.021493,29.778765;107.021709,29.779107;107.020626,29.780094;107.020843,29.781313;107.021455,29.782119;107.022826,29.782069;107.023944,29.78265;107.024845,29.782483;107.025494,29.782663;107.024808,29.784363;107.024844,29.785272;107.025457,29.786361;107.026574,29.786663;107.027547,29.787906;107.02679,29.788979;107.026646,29.789671;107.028664,29.789932;107.029276,29.791525;107.030429,29.792487;107.032661,29.793724;107.034534,29.796378;107.034642,29.798196;107.035002,29.799636;107.035219,29.801139;107.037451,29.80458;107.039287,29.807367;107.035117,29.80932;107.030782,29.811509;107.029449,29.812179;107.027613,29.812494;107.019391,29.813069;107.014628,29.813205;107.008816,29.813428;107.008095,29.813534;107.007915,29.815104;107.007592,29.817461;107.00669,29.817914;107.001998,29.817175;107.000157,29.816826;106.99976,29.816863;106.999669,29.816253;106.9992,29.815805;106.998262,29.815959;106.997631,29.816313;106.996459,29.816015;106.994169,29.815055;106.992167,29.813869;106.989176,29.812094;106.985036,29.810865;106.980683,29.809215;106.977413,29.807395;106.974038,29.806066"
+        },
+        {
+            "id": 49,
+            "pid": 48,
+            "name": "德雅化工",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.977722,29.803703;106.98013,29.80452;106.980255,29.804771;106.97909,29.807184;106.978479,29.806807;106.978514,29.806305;106.977022,29.805112"
+        },
+        {
+            "id": 50,
+            "pid": 48,
+            "name": "农药化工",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.976168,29.800812;106.976114,29.800632;106.976231,29.800428;106.976374,29.800397;106.976562,29.799888;106.976293,29.79937;106.978241,29.798513;106.980234,29.798326;106.980864,29.799423;106.981547,29.799673;106.981133,29.800677;106.981817,29.800973;106.981943,29.801491;106.981333,29.802714;106.981333,29.802714;106.979464,29.801993"
+        },
+        {
+            "id": 51,
+            "pid": 48,
+            "name": "秋田化工",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.993140,29.808480;106.993211,29.807390;106.995856,29.807315;106.995910,29.807390;106.996091,29.808320;106.993145,29.808487"
+           // "info": "106.99321,29.807438;106.993246,29.807422;106.995387,29.807331;106.995762,29.807545;106.995896,29.807532;106.996028,29.80831;106.993139,29.808477"
+        },
+        {
+            "id": 52,
+            "pid": 48,
+            "name": "欣欣向荣",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.994809,29.808397;106.996008,29.808328;106.996248,29.809445;106.994788,29.809401"
+        },
+        {
+            "id": 53,
+            "pid": 48,
+            "name": "云天化",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.996665,29.810275;106.999461,29.810268;106.999533,29.810353;106.999562,29.812852;106.998723,29.813029;106.997462,29.813053;106.997236,29.812978;106.997127,29.812877;106.996892,29.811737;106.996692,29.810438;106.996692,29.810446;106.996692,29.810438"
+        },
+        {
+            "id": 54,
+            "pid": 48,
+            "name": "BP",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 55,
+            "pid": 48,
+            "name": "宏源实业",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 56,
+            "pid": 48,
+            "name": "川维老区",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 57,
+            "pid": 48,
+            "name": "华雄实业",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 58,
+            "pid": 48,
+            "name": "川维铁路罐区",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 59,
+            "pid": 48,
+            "name": "扬子江乙酰化工有限公司 ",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 60,
+            "pid": 48,
+            "name": "重庆金苏化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.002864,29.800858;107.002403,29.80085;107.001934,29.800825;107.00142,29.80081;107.001429,29.800481;107.001447,29.800072;107.001446,29.799649;107.001455,29.799579;107.001897,29.79958;107.002105,29.799577;107.002412,29.799588;107.002457,29.79994;107.002448,29.80005;107.002529,29.800197;107.002638,29.800297;107.002701,29.800328;107.002819,29.80049;107.002891,29.800669;107.002891,29.800756;107.002864,29.800851"
+        },
+        {
+            "id": 61,
+            "pid": 48,
+            "name": "重庆康普化学工业有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.99878,29.805025;107.001251,29.804848;107.001396,29.806115;107.00137,29.806735;106.999746,29.807072;106.998944,29.807052"
+        },
+        {
+            "id": 62,
+            "pid": 48,
+            "name": "福安药业集体重庆博圣制药有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.001209,29.807346;107.001462,29.807563;107.001554,29.80992;107.001302,29.810151;106.99957,29.810168;106.999613,29.807362;107.00001,29.80738"
+        },
+        {
+            "id": 63,
+            "pid": 48,
+            "name": "重庆凯林制药有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.997122,29.807179;106.997122,29.80681;106.997103,29.806379;106.997103,29.805886;106.997094,29.805314;106.997364,29.805012;106.997743,29.80467;106.998032,29.804384;106.998356,29.804028;106.998464,29.803916;106.998573,29.804887;106.998628,29.805512;106.998709,29.806326;106.998736,29.806647;106.998763,29.807149;106.998763,29.807164;106.998331,29.807163;106.997871,29.807169;106.997131,29.807186"
+        },
+        {
+            "id": 64,
+            "pid": 48,
+            "name": "重庆康乐制药有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.999612,29.810289;107.000541,29.810339;107.001412,29.810342;107.001529,29.810453;107.001646,29.810651;107.001679,29.811039;107.001589,29.811472;106.999613,29.811434;106.999617,29.811172"
+        },
+        {
+            "id": 65,
+            "pid": 48,
+            "name": "重庆斯泰克瑞登梅尔材料技术有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.99962,29.811482;107.001505,29.811509;107.001497,29.812421;107.001412,29.812654;107.001218,29.812876;107.000884,29.812987;106.999743,29.812913;106.999644,29.812806"
+        },
+        {
+            "id": 66,
+            "pid": 48,
+            "name": "重庆博腾制药科技股份有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.993017,29.813025;106.992993,29.813858;106.992996,29.813886;106.993018,29.813915;106.993044,29.813938;106.994115,29.814518;106.995285,29.815185;106.996586,29.815739;106.997483,29.816065;106.997506,29.816069;106.997522,29.816069;106.997547,29.816059;106.997671,29.815868;106.997715,29.815852;106.997715,29.815818;106.997984,29.815771;106.998332,29.815601;106.998503,29.815539;106.998655,29.8155;106.998653,29.815446;106.999172,29.815458;106.999283,29.815482;106.999545,29.815557;106.99978,29.81568;106.999965,29.815861;107.000001,29.815885;107.000096,29.816108;107.000127,29.816234;107.000155,29.816376;107.00016,29.816443;107.000175,29.816482;107.0002,29.8165;107.00115,29.816733;107.001197,29.816735;107.001232,29.816735;107.00126,29.816719;107.001284,29.816697;107.001413,29.816199;107.001501,29.815524;107.001574,29.814826;107.001593,29.814107;107.001582,29.814067;107.001574,29.814042;107.00155,29.814009;106.99946,29.813458;106.999219,29.813423;106.999004,29.81342;106.997655,29.813437;106.99669,29.813453;106.996148,29.813488;106.995995,29.813493;106.995791,29.813493;106.995662,29.81349;106.995493,29.813497;106.995107,29.813411;106.994729,29.813316;106.993954,29.813167;106.993138,29.812981;106.993093,29.812978;106.993069,29.812978;106.993044,29.812978;106.993017,29.813025"
+        },
+        {
+            "id": 67,
+            "pid": 48,
+            "name": "重庆朗天制药有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.994807,29.811501;106.996614,29.811506;106.996899,29.812858;106.996886,29.813023;106.996295,29.813073;106.994912,29.812984"
+        },
+        {
+            "id": 68,
+            "pid": 48,
+            "name": "重庆安格龙翔有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.993108,29.810938;106.994712,29.811014;106.994867,29.812971;106.994345,29.812915;106.993299,29.812652;106.9931,29.812513;106.993109,29.812207"
+        },
+        {
+            "id": 69,
+            "pid": 48,
+            "name": "重庆华应化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.993085,29.807398;106.991770,29.807048;106.990548,29.806291;106.990283,29.807167;106.990050,29.807687;106.989803,29.807944;106.990068,29.808046;106.990573,29.808242;106.991343,29.808313;106.992568,29.808384;106.993050,29.808379;106.993094,29.807402"
+            //"info": "106.992928,29.808443;106.990622,29.808183;106.991288,29.806892;106.991991,29.807155;106.992973,29.807408;106.992932,29.808439"
+        },
+        {
+            "id": 70,
+            "pid": 48,
+            "name": "重庆莱美隆宇药业股份有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.981992,29.801598;106.981553,29.802515;106.983729,29.803349;106.98459,29.801715;106.984068,29.800973;106.98335,29.800905;106.982865,29.801886"
+        },
+        {
+            "id": 71,
+            "pid": 48,
+            "name": "金刚化工（重庆）有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.011094,29.812884;107.01112,29.811316;107.014441,29.811324;107.014468,29.811221;107.014711,29.811201;107.015912,29.811582;107.01539,29.812844;107.012682,29.812857;107.011112,29.812883"
+        },
+        {
+            "id": 72,
+            "pid": 48,
+            "name": "立邦（涂料）化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.990468,29.81175;106.990917,29.810602;106.992737,29.811117;106.992648,29.81245;106.990486,29.811766"
+        },
+        {
+            "id": 73,
+            "pid": 48,
+            "name": "重庆东银天润石化仓储有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.029763,29.805174;107.029754,29.804312;107.029762,29.803482;107.031122,29.803463;107.031725,29.804658;107.030763,29.805001;107.029772,29.805182"
+        },
+        {
+            "id": 74,
+            "pid": 48,
+            "name": "重庆韩拓科技有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.00253,29.812899;107.002205,29.811979;107.002177,29.811894;107.005651,29.811862;107.005679,29.812896;107.00253,29.812914"
+        },
+        {
+            "id": 75,
+            "pid": 48,
+            "name": "重庆威能钻井助剂有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.993106,29.810855;106.994728,29.810939;106.994736,29.809339;106.993114,29.809373;106.993115,29.810847"
+        },
+        {
+            "id": 76,
+            "pid": 48,
+            "name": "重庆市长寿区明宇机械设备有限公司",
+            "region_lv": 3,
+            "region_type": 8,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.005643,29.807008;107.005622,29.803662;107.005731,29.803614;107.007013,29.803592;107.007041,29.807008;107.005643,29.807024"
+         // "info": "107.005693,29.807030;107.005657,29.807003;107.005655,29.803830;107.005682,29.803794;107.005731,29.803774;107.007386,29.803746;107.007432,29.803766;107.007459,29.803804;107.007434,29.806974;107.007403,29.806999;107.005693,29.807030"
+        },
+        {
+            "id": 77,
+            "pid": 48,
+            "name": "重庆天珠科技有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "106.994815,29.809418;106.996248,29.809464;106.996637,29.811449;106.994844,29.811455;106.994798,29.811017"
+        },
+        {
+            "id": 78,
+            "pid": 48,
+            "name": "重庆植恩药业有限公司鼎联分公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.005968,29.812914;107.005887,29.812854;107.005859,29.811671;107.005812,29.810378;107.005894,29.81026;107.008177,29.810206;107.008258,29.810299;107.008277,29.811678;107.008287,29.812814;107.008189,29.812885;107.005977,29.812914"
+        },
+        {
+            "id": 79,
+            "pid": 48,
+            "name": "中国石化集团重庆川维化工有限公司",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop":1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 80,
+            "pid": 48,
+            "name": "川维江边物流罐区",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": null
+        },
+        {
+            "id": 82,
+            "pid": 1,
+            "name": "化工企业区4",
+            "region_lv": 2,
+            "region_type": 2,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.044232,29.815069;107.043224,29.812276;107.045485,29.811909;107.048141,29.813398;107.050365,29.81401;107.050402,29.815108;107.054811,29.816658;107.057639,29.817509;107.057748,29.818857;107.057965,29.820083;107.057214,29.821044;107.054637,29.822109;107.053456,29.823506;107.051343,29.824769;107.047508,29.826525;107.045859,29.827393;107.041299,29.82672;107.040724,29.826407;107.041549,29.825154;107.042302,29.824027;107.042228,29.822617;107.043664,29.82074;107.043661,29.818358;107.044162,29.816762;107.044232,29.815006"
+        },
+        {
+            "id": 83,
+            "pid": 82,
+            "name": "卡贝乐",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info": "107.050286,29.821073;107.051719,29.819769;107.052362,29.818663;107.053023,29.816806;107.053131,29.816493;107.050675,29.815639;107.048738,29.814933;107.047303,29.814469;107.045743,29.814507;107.046376,29.819023;107.046036,29.821372;107.047596,29.82099;107.04835,29.820901;107.049157,29.82086;107.050161,29.821041"
+        },
+        {
+            "id": 85,
+            "pid": 1,
+            "name": "菩提山生态防护区",
+            "region_lv": 2,
+            "region_type": 4,
+            "is_stop": 1,
+            "is_ban": 1,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.053147,29.881541;107.048164,29.881528;107.042675,29.880752;107.036675,29.878843;107.033007,29.876826;107.030057,29.875125;107.026240,29.872908;107.023789,29.871905;107.019786,29.870832;107.017477,29.870147;107.018670,29.868782;107.019285,29.867019;107.019719,29.865040;107.018891,29.862861;107.017664,29.861784;107.020010,29.860653;107.020120,29.858021;107.020048,29.856894;107.018714,29.855724;107.017090,29.855498;107.016224,29.855198;107.015863,29.854766;107.016044,29.853855;107.016657,29.853375;107.017199,29.850422;107.018823,29.849145;107.019580,29.847411;107.020338,29.845520;107.019760,29.844745;107.018822,29.844383;107.017126,29.843407;107.016258,29.842417;107.015067,29.840933;107.015103,29.840400;107.019037,29.841466;107.021743,29.842462;107.024232,29.842899;107.027909,29.842920;107.029998,29.842118;107.033706,29.841497;107.040717,29.840414;107.042585,29.840009;107.043698,29.841202;107.044920,29.842303;107.049331,29.843176;107.051626,29.843635;107.053311,29.844842;107.054744,29.848774;107.055066,29.850876;107.054923,29.853756;107.057284,29.857983;107.059466,29.861958;107.060073,29.863940;107.058280,29.868423;107.056057,29.871587;107.055053,29.873047;107.052366,29.873080;107.049392,29.872928;107.048674,29.873704;107.048134,29.875955;107.048275,29.877803;107.050103,29.878819;107.051823,29.879304;107.053113,29.879568;107.053183,29.881541"
+           // "info": "107.019084,29.86984;107.02932,29.873972;107.038384,29.878808;107.048434,29.88059;107.05338,29.880823;107.056179,29.874846;107.058691,29.868117;107.059984,29.862874;107.057123,29.85726;107.054904,29.853412;107.055191,29.850973;107.055191,29.848655;107.053829,29.845569;107.052825,29.843804;107.050173,29.842525;107.046443,29.841998;107.043428,29.84092;107.042708,29.83816;107.043424,29.8334;107.041698,29.831766;107.038678,29.82951;107.03875,29.828507;107.037454,29.827444;107.035799,29.82632;107.033423,29.824577;107.032702,29.823891;107.030903,29.824656;107.029678,29.824729;107.028525,29.823924;107.027372,29.823936;107.025498,29.824458;107.024127,29.824036;107.023117,29.822795;107.021818,29.822185;107.019725,29.821526;107.019076,29.822413;107.020015,29.823214;107.017925,29.826191;107.015548,29.830553;107.015188,29.832627;107.013456,29.833972;107.015119,29.838268;107.017864,29.840543;107.020824,29.842066;107.023494,29.847731;107.02508,29.854665;107.02111,29.861231;107.020098,29.86494;107.019156,29.869839"
+        },
+        {
+            "id": 87,
+            "pid": 1,
+            "name": "水口水库防护带",
+            "region_lv": 2,
+            "region_type": 4,
+            "is_stop": 1,
+            "is_ban": 1,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.002722,29.790293;107.001440,29.790266;107.000575,29.790123;106.999402,29.789231;106.998771,29.788221;106.998032,29.786492;106.997491,29.786436;106.995327,29.786589;106.991254,29.787887;106.983802,29.790348;106.982256,29.790728;106.980568,29.793112;106.975934,29.794673;106.973136,29.796133;106.972060,29.797004;106.971845,29.798131;106.972097,29.800108;106.972528,29.800393;106.974141,29.798083;106.976904,29.797090;106.980460,29.796248;106.982509,29.796777;106.983804,29.797996;106.984847,29.799088;106.985352,29.800058;106.985784,29.800432;106.986575,29.800522;106.988231,29.800229;106.990824,29.800772;106.992265,29.801135;106.993924,29.801807;106.994500,29.801612;106.994753,29.800982;106.994824,29.799320;106.995076,29.797907;106.995688,29.797335;106.996265,29.796889;106.996842,29.796694;106.997383,29.797125;106.997671,29.797121;106.998321,29.797112;106.999222,29.796975;106.999800,29.796841;107.000161,29.796836;107.000666,29.796421;107.001964,29.791637;107.002361,29.790691;107.002686,29.790279;107.002541,29.790281"
+            //"info": "106.97244,29.803423;106.969784,29.799454;106.969496,29.797697;106.971216,29.794952;106.974731,29.794284;106.978321,29.793041;106.980765,29.791788;106.981196,29.789782;106.991055,29.786847;107.002956,29.788073;107.002956,29.791207;107.000214,29.79501;106.994876,29.795081;106.991202,29.800261;106.990195,29.802213;106.985225,29.800114;106.982852,29.79937;106.981628,29.797367;106.978107,29.796927;106.973872,29.798981;106.973228,29.802676;106.973445,29.804495;106.97244,29.803423"
+        },
+        {
+            "id": 89,
+            "pid": 1,
+            "name": "晏家场镇",
+            "region_lv": 2,
+            "region_type": 3,
+            "is_stop": 1,
+            "is_ban": 1,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.016705,29.833881;107.013890,29.833581;107.013457,29.833870;107.012807,29.834602;107.012085,29.834958;107.011400,29.835127;107.011002,29.834820;107.010929,29.833881;107.011001,29.833065;107.011000,29.831687;107.009375,29.831087;107.008292,29.831356;107.007028,29.830750;107.005295,29.829995;107.005042,29.829184;107.004897,29.828497;107.004500,29.828190;107.004101,29.827507;107.004534,29.826873;107.005328,29.826860;107.006917,29.827430;107.007566,29.826322;107.005796,29.825755;107.005255,29.825577;107.004930,29.825300;107.004749,29.824801;107.004748,29.824081;107.005108,29.823699;107.005613,29.823471;107.006444,29.823426;107.007346,29.823568;107.008538,29.823925;107.008935,29.823761;107.008862,29.823041;107.009729,29.822870;107.011244,29.822594;107.012038,29.822299;107.013229,29.821997;107.014672,29.821628;107.015394,29.820864;107.015862,29.820010;107.016367,29.819532;107.017341,29.819392;107.019146,29.819741;107.020553,29.820159;107.020734,29.820721;107.020807,29.821534;107.021313,29.821872;107.022178,29.822079;107.022395,29.822358;107.022000,29.823618;107.021929,29.824245;107.021243,29.824851;107.018935,29.825260;107.017601,29.826502;107.017277,29.826946;107.017638,29.827599;107.018649,29.828430;107.018505,29.828996;107.018217,29.829470;107.017459,29.829826;107.016413,29.829906;107.015511,29.830139;107.014070,29.832826;107.013890,29.833613"
+            //"info": "107.002757,29.818009;107.005644,29.818464;107.009002,29.819035;107.013154,29.819623;107.015572,29.819333;107.018315,29.818851;107.019976,29.820425;107.021313,29.821879;107.020341,29.82368;107.018358,29.826185;107.01598,29.82945;107.014753,29.830848;107.013781,29.833465;107.01335,29.835446;107.011039,29.83608;107.01064,29.833204;107.010422,29.83139;107.009302,29.830312;107.007642,29.831625;107.006704,29.832079;107.005512,29.831222;107.003564,29.831816;107.002734,29.831892;107.002912,29.830041;107.002479,29.829452;107.002729,29.826502;107.001682,29.825485;107.002798,29.823649;107.002941,29.822206;107.002867,29.820765;107.002469,29.819423;107.001602,29.818371;107.00189,29.817678;107.002757,29.818009"
+        },
+        {
+            "id": 92,
+            "pid": 0,
+            "name": "试运行区域",
+            "region_lv": 2,
+            "region_type": 1,
+            "is_stop": 0,
+            "is_ban": 0,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.971160,29.830615;106.966627,29.832219;106.966180,29.832856;106.966629,29.835322;106.968782,29.840387;106.970756,29.844509;106.974594,29.851988;106.975204,29.853713;106.976460,29.856380;106.977213,29.857760;106.977609,29.858574;106.978183,29.859640;106.978613,29.859954;106.979152,29.860236;106.979799,29.860519;106.980984,29.860487;106.981415,29.860268;106.982351,29.858950;106.985050,29.856593;106.986327,29.854942;106.987588,29.853337;106.993081,29.851238;106.993116,29.851081;106.992486,29.850054;106.990288,29.845630;106.984568,29.834153;106.984378,29.833700;106.984243,29.833292;106.984018,29.832847;106.985654,29.832151;106.986292,29.831810;106.986545,29.831715;106.987030,29.831657;106.987724,29.831700;106.988119,29.831713;106.988326,29.831734;106.990270,29.830913;106.990279,29.830811;106.990522,29.830566;106.991818,29.829738;106.992178,29.829485;106.990610,29.827807;106.990968,29.826723;106.985740,29.822674;106.985704,29.822686;106.984868,29.823446;106.984424,29.823820;106.983376,29.824525;106.982128,29.825378;106.981265,29.825975;106.980435,29.826501;106.979820,29.826842;106.979443,29.826771;106.979178,29.826924;106.975930,29.828546;106.971142,29.830619"
+        },
+        {
+            "id": 93,
+            "pid": 92,
+            "name": "化医林德",
+            "region_lv":3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.982310,29.841284;106.979831,29.842156;106.979705,29.842086;106.979386,29.841162;106.979364,29.841068;106.978788,29.839892;106.978797,29.839876;106.981142,29.838972;106.981173,29.838999;106.981816,29.840232;106.982306,29.841288"
+        },
+        {
+            "id": 94,
+            "pid": 92,
+            "name": "恩力吉",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.981893,29.840216;106.981852,29.840204;106.981222,29.838952;106.981236,29.838936;106.983396,29.838117;106.983419,29.838133;106.984041,29.839388;106.984045,29.839419;106.981897,29.840216"
+            //"info":"106.982310,29.841284;106.979831,29.842156;106.979705,29.842086;106.979386,29.841162;106.979364,29.841068;106.978788,29.839892;106.978797,29.839876;106.981142,29.838972;106.981173,29.838999;106.981816,29.840232;106.982306,29.841288"
+        },
+        {
+            "id": 95,
+            "pid": 92,
+            "name": "飞华",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.974746,29.835036;106.973578,29.832743;106.973704,29.832618;106.976305,29.831658;106.976502,29.831690;106.977635,29.833996;106.977653,29.834121;106.974782,29.835067"
+            //"info":"106.981893,29.840216;106.981852,29.840204;106.981222,29.838952;106.981236,29.838936;106.983396,29.838117;106.983419,29.838133;106.984041,29.839388;106.984045,29.839419;106.981897,29.840216"
+        },
+        {
+            "id": 97,
+            "pid": 1,
+            "name": "禁行区2",
+            "region_lv": 2,
+            "region_type": 4,
+            "is_stop": 1,
+            "is_ban": 1,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.969744,29.831106;106.969036,29.831397;106.968875,29.831514;106.968821,29.831708;106.968956,29.831960;106.968392,29.832354;106.968446,29.832512;106.968866,29.832273;106.969028,29.832118;106.969549,29.833258;106.970051,29.833818;106.970328,29.834096;106.971001,29.834868;106.970634,29.835084;106.970311,29.835231;106.970213,29.835332;106.970052,29.835965;106.969846,29.835877;106.969783,29.835822;106.969694,29.835399;106.969406,29.835051;106.969093,29.835620;106.968959,29.836261;106.968977,29.836669;106.968969,29.836881;106.969085,29.837093;106.969740,29.837529;106.970161,29.838128;106.970376,29.838670;106.970502,29.839243;106.970718,29.839605;106.970996,29.840007;106.971928,29.841048;106.972781,29.842447;106.972620,29.842627;106.972566,29.842978;106.972485,29.843432;106.972548,29.843620;106.972683,29.843496;106.972728,29.843316;106.972710,29.843096;106.972790,29.842690;106.972835,29.842628;106.972827,29.843238;106.972818,29.844405;106.972943,29.844868;106.973311,29.845661;106.973365,29.846014;106.973517,29.846500;106.974119,29.847592;106.974774,29.849272;106.974891,29.849961;106.975008,29.850016;106.975177,29.850095;106.975995,29.849989;106.977036,29.851715;106.977117,29.851723;106.977188,29.851652;106.976335,29.849975;106.976191,29.849840;106.975231,29.849892;106.975061,29.849766;106.974621,29.848221;106.974379,29.847664;106.974056,29.847044;106.973625,29.846266;106.973544,29.846077;106.973526,29.845678;106.973329,29.845231;106.972988,29.844657;106.972916,29.842816;106.975114,29.848576;106.975312,29.848647;106.975671,29.848719;106.975968,29.849197;106.976164,29.849519;106.976254,29.849519;106.976308,29.849426;106.975860,29.848563;106.975626,29.848484;106.975303,29.848397;106.975168,29.848215;106.973589,29.844143;106.972960,29.842542;106.973176,29.842449;106.973436,29.842380;106.973579,29.842240;106.973480,29.841864;106.973400,29.841652;106.973238,29.841753;106.973346,29.842239;106.972951,29.842378;106.972718,29.841922;106.972448,29.841426;106.972126,29.840962;106.971372,29.840135;106.970924,29.839567;106.970754,29.839284;106.970592,29.838892;106.970475,29.838335;106.970519,29.837841;106.970519,29.837019;106.970465,29.836712;106.970393,29.836352;106.970178,29.836053;106.970214,29.835849;106.970285,29.835490;106.970590,29.835265;106.971002,29.835033;106.971100,29.835034;106.971109,29.835151;106.971208,29.835027;106.971127,29.834728;106.970625,29.834105;106.970310,29.833853;106.969880,29.833332;106.969575,29.832937;106.969100,29.831868;106.969027,29.831624;106.969153,29.831484;106.969475,29.831385;106.969869,29.831232;106.969914,29.831217;106.969851,29.831091;106.969761,29.831106"
+        },{
+            "id": 98,
+            "pid": 1,
+            "name": "禁行区3",
+            "region_lv": 2,
+            "region_type": 4,
+            "is_stop": 1,
+            "is_ban": 1,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.978345,29.856587;106.978184,29.856775;106.978741,29.857355;106.978309,29.857261;106.978058,29.857401;106.978614,29.858294;106.979027,29.858655;106.979494,29.858859;106.979961,29.858953;106.980913,29.858858;106.981327,29.858435;106.981273,29.857981;106.981346,29.857699;106.981723,29.857386;106.981921,29.857088;106.982640,29.856538;106.982748,29.855928;106.983179,29.855410;106.983899,29.855360;106.984312,29.855124;106.984403,29.854919;106.983629,29.855032;106.983378,29.854548;106.982910,29.853875;106.983935,29.853496;106.984636,29.854168;106.984618,29.853901;106.984475,29.853604;106.984205,29.853401;106.985410,29.852911;106.985338,29.852724;106.985230,29.852583;106.984223,29.850441;106.984169,29.850065;106.984583,29.849751;106.985609,29.849339;106.985788,29.849260;106.985537,29.849152;106.984205,29.849611;106.984349,29.849408;106.984277,29.849126;106.983990,29.848798;106.983557,29.848706;106.983593,29.848955;106.983810,29.849065;106.984044,29.849299;106.983846,29.849394;106.983629,29.849582;106.984044,29.850615;106.983719,29.850710;106.983450,29.850084;106.983162,29.850038;106.983108,29.850289;106.983468,29.850977;106.983593,29.851023;106.984151,29.850912;106.985087,29.852850;106.984079,29.853167;106.983144,29.852356;106.982496,29.851715;106.982065,29.851199;106.981580,29.851075;106.981401,29.850511;106.981221,29.849995;106.980412,29.848961;106.979891,29.847975;106.978238,29.845781;106.977969,29.845263;106.977878,29.844903;106.977663,29.844558;106.976550,29.844180;106.976406,29.843772;106.975831,29.843269;106.975131,29.842013;106.974826,29.841745;106.974377,29.840537;106.972599,29.837848;106.972474,29.838067;106.973408,29.839717;106.974018,29.840613;106.974449,29.841634;106.974682,29.842215;106.975024,29.842513;106.975293,29.843251;106.975832,29.843802;106.976244,29.844241;106.976424,29.844602;106.977322,29.844839;106.977610,29.844981;106.977268,29.845419;106.977071,29.845810;106.977322,29.846437;106.977628,29.847064;106.978238,29.847535;106.979334,29.848351;106.979658,29.848460;106.980143,29.849290;106.980610,29.850042;106.980969,29.850418;106.981203,29.851076;106.981365,29.851325;106.981886,29.851748;106.982407,29.852092;106.982425,29.852139;106.983665,29.853231;106.983701,29.853388;106.982838,29.853751;106.979945,29.850371;106.979855,29.850528;106.979891,29.850935;106.982496,29.853939;106.983089,29.854690;106.983251,29.854986;106.982568,29.855333;106.982082,29.856477;106.981885,29.856774;106.981453,29.857183;106.980698,29.857324;106.980482,29.857278;106.980321,29.857450;106.980536,29.857638;106.981040,29.857496;106.980985,29.857856;106.980913,29.858294;106.980392,29.858358;106.979925,29.858327;106.979548,29.858201;106.979099,29.857528;106.978848,29.857136;106.978363,29.856572"
+        },
+        {
+            "id": 99, /*id=100***************************************/
+            "pid": 1,
+            "name": "菩提山生态防护区2",
+            "region_lv": 2,
+            "region_type": 4,
+            "is_stop": 1,
+            "is_ban": 1,
+            "is_hazard": 2,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"107.041489,29.839396;107.039261,29.839772;107.037032,29.840105;107.029367,29.841027;107.024249,29.841708;107.023510,29.841686;107.017801,29.840506;107.016962,29.840339;107.015301,29.839762;107.015283,29.839559;107.017195,29.838119;107.018151,29.836584;107.018618,29.834933;107.019880,29.832140;107.020383,29.830300;107.020671,29.829575;107.021500,29.828920;107.022238,29.827187;107.023191,29.825122;107.023190,29.823821;107.023243,29.822880;107.023676,29.822593;107.025516,29.824059;107.026129,29.824162;107.027210,29.823946;107.028723,29.823978;107.029913,29.824470;107.030885,29.824697;107.031353,29.824646;107.031911,29.824281;107.032792,29.823852;107.035097,29.825328;107.037598,29.827201;107.038660,29.828390;107.039597,29.830317;107.040496,29.831319;107.042418,29.832136;107.043352,29.833110;107.043085,29.835444;107.042654,29.835678;107.041146,29.835988;107.040320,29.836834;107.040230,29.837805;107.040501,29.838635;107.040842,29.839153;107.041381,29.839294;107.041489,29.839388"
+        },
+        {
+            "id": 101,
+            "pid": 92,
+            "name": "飞华2",
+            "region_lv": 3,
+            "region_type": 6,
+            "is_stop": 1,
+            "is_ban": 2,
+            "is_hazard": 1,
+            "stop_vehicle": null,
+            "feasible_vehicle": null,
+            "max_speed": null,
+            "update_time": "2020-12-25 14:35:43",
+            "is_del": 1,
+            "info":"106.982272,29.830278;106.982794,29.831029;106.983748,29.832766;106.984037,29.833360;106.984225,29.833931;106.986472,29.838511;106.986320,29.838579;106.984130,29.839395;106.984099,29.839368;106.982924,29.836924;106.981579,29.834094;106.981578,29.833969;106.980723,29.831996;106.980390,29.830978;106.982249,29.830247"
+            //"info":"106.974746,29.835036;106.973578,29.832743;106.973704,29.832618;106.976305,29.831658;106.976502,29.831690;106.977635,29.833996;106.977653,29.834121;106.974782,29.835067"
+        },
+    ]
+})
+//	return false;
+				// $.post('http://zhyq.toommi.com/api/Index/apppost',{
+				// 	action:'Perimeter/perimeter_list'
+				// }).then(r=>{
+				// 	console.log(JSON.parse(r))
+				// })
+			}
+
+
+
+		</script>
+	</body>
+</html>

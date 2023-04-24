@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!--<script src="../js/jquery-1.11.3.js"></script>-->
+		<script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		
+		<title>查看报警</title>
+		<style type="text/css">
+			/*tr{
+				border-bottom: 1px solid #eee;
+				height: 0.3px;
+			}*/
+			tr td{
+				border: 1px solid #eee;
+				height:40px;
+			}
+			tr th{
+				border: 1px solid #eee;
+				height:40px;
+				background: #EEEEEE;
+			}
+		</style>
+	</head>
+	<body>
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ids" style="border: 1px solid #eee;text-align: center;">
+			<tr><th>序号</th><th>车牌号</th><th>事件名称</th><th>触发类型</th><th>报警时间</th><th>是否处理</th></tr>
+			<!--<tr><td>2</td><td>订单</td><td>订单</td></tr>
+			<tr><td>3</td><td>244</td><td>2444444</td></tr>-->
+			
+		</table>
+	</body>
+	
+	<script type="text/javascript">
+		 function GetRequest() {
+		 	var url = location.search; //获取url中"?"符后的字串
+		 	var theRequest = new Object();
+		 	if(url.indexOf("?") != -1) {
+		 		var str = url.substr(1);
+		 		strs = str.split("&");
+		 		for(var i = 0; i < strs.length; i++) {
+		 			theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+		 
+		 		}
+		 	}
+		 	return theRequest;
+		 }
+		 function getlist(cph){
+				let _this=this;
+			  	$.ajax({
+			      	dataType: "json",
+			      	type: "post",
+			        url:'http://zhyq.toommi.com/api/Index/apppost',
+			      	data: {
+			          action:'Screen/vehicle_alarm_list',
+			          page:1,
+			          limit:100,
+			          vehicleNo:cph
+			      	},
+			      	success: function(res) {
+			      		if (res.code == 200) {
+			      			var list =res.data.list;
+			      			var ht=''
+			      			for(var i=0;i<list.length;i++){
+			      				if(list[i].trigger_type==1){
+			      					list[i].trigger_type='自动触发'
+			      				}else{
+			      					list[i].trigger_type='自主上报'
+			      				}
+			      				if(list[i].is_reset==0){
+			      					list[i].is_reset='未处理'
+			      				}else{
+			      					list[i].is_reset='已处理'
+			      				}
+			      				ht+=
+			      				'<tr>'+'<td>'+Number(i+1)+'</td>'+'<td>'+list[i].license+'</td>'+'<td>'+list[i].name+'</td>'+'<td>'+list[i].trigger_type+'</td>'+'<td>'+list[i].create_time+'</td>'+'<td>'+list[i].is_reset+'</td>'+'</tr>'
+			      			}
+			      			$('table').append(ht);
+			      		} else {
+			      		}
+			
+			      	},
+			      });
+			  }
+		window.onload=function(){
+			var obj=GetRequest();
+			cph=decodeURI(obj.cph);
+			getlist(cph);
+		}
+	</script>
+</html>
